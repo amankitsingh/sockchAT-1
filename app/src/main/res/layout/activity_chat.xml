@@ -5,15 +5,16 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="bottom"
+    android:padding="10dp"
     android:orientation="vertical"
-    tools:context=".ChatActivity">
-
+    tools:context=".dummy">
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <TextView
             android:id="@+id/messageHistory"
+            android:padding="5dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="logs will appear here" />
