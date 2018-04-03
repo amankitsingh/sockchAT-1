@@ -1,6 +1,5 @@
 package com.example.dhp.chatapp;
 
-import android.annotation.SuppressLint;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,7 +13,7 @@ public class MainActivity extends AppCompatActivity {
     TextView infoip, logText, response;
     EditText editTextAddress, editTextPort;
     Button buttonConnect, buttonClear;
-    Server server;
+    ComplexServer complexServer;
 
     public static String otherServerIP;
     public static int otherServerPort;
@@ -35,18 +34,18 @@ public class MainActivity extends AppCompatActivity {
         response = findViewById(R.id.responseTextView);
 
 
-        //start server
-        server = new Server(this);
-        infoip.setText(server.getIpAddress() + ":" + server.getPort());
+        //start complexServer
+        complexServer = new ComplexServer(this);
+        infoip.setText(complexServer.getIpAddress() + ":" + complexServer.getPort());
 
         buttonConnect.setOnClickListener(new View.OnClickListener() {
 
             @Override
             public void onClick(View arg0) {
-                Client myClient = new Client(MainActivity.this, editTextAddress.getText()
+                ComplexClient myComplexClient = new ComplexClient(MainActivity.this, editTextAddress.getText()
                         .toString(), Integer.parseInt(editTextPort
                         .getText().toString()), response);
-                myClient.execute();
+                myComplexClient.execute();
             }
         });
 
@@ -63,6 +62,6 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        server.onDestroy();
+        complexServer.onDestroy();
     }
 }

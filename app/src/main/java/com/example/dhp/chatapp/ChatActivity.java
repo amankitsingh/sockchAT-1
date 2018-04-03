@@ -17,14 +17,24 @@ public class ChatActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
-        typeMessage=findViewById(R.id.typeMessage);
-        messageHistory=findViewById(R.id.messageHistory);
-        sendButton=findViewById(R.id.sendButton);
+        typeMessage = findViewById(R.id.typeMessage);
+        messageHistory = findViewById(R.id.messageHistory);
+        sendButton = findViewById(R.id.sendButton);
 
         sendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                final String message = typeMessage.getText().toString();
+                Thread thread = new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        new SimpleClient(message);
+                    }
+                });
+                thread.start();
 
+                messageHistory.append("\nYou:" + message);
+                typeMessage.setText("");
             }
         });
 
