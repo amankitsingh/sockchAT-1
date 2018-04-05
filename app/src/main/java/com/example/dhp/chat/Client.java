@@ -25,6 +25,7 @@ public class Client {
                     BufferedWriter br = new BufferedWriter(outputStreamWriter);
                     br.write(message);
                     br.close();
+                    ChatActivity.messageList.add(new Message(message, MessageListAdapter.VIEW_TYPE_MESSAGE_SENT));
                     Log.d(MainActivity.customLog, "Message sent from try blk Client:" + message);
                     socket.close();
 

@@ -45,11 +45,11 @@ public class MainActivity extends AppCompatActivity {
                 String ipAndPort=myServerIP+"@"+myServerPort;
                 Log.d(customLog,"ma sending post");
                 new Client(ipAndPort);
+                //MainActivity.this.finish();
                 startActivity(new Intent(MainActivity.this,ChatActivity.class));
+
             }
         });
-
-
 
     }
     @Override
