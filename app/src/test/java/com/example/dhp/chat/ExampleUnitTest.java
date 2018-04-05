@@ -1,4 +1,4 @@
-package com.example.dhp.chatapp;
+package com.example.dhp.chat;
 
 import org.junit.Test;
 

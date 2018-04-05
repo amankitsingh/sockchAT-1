@@ -1,4 +1,4 @@
-package com.example.dhp.chatapp;
+package com.example.dhp.chat;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
@@ -21,6 +21,6 @@ public class ExampleInstrumentedTest {
         // Context of the app under test.
         Context appContext = InstrumentationRegistry.getTargetContext();
 
-        assertEquals("com.example.dhp.chatapp", appContext.getPackageName());
+        assertEquals("com.example.dhp.chat", appContext.getPackageName());
     }
 }
