@@ -16,7 +16,7 @@ public class Message {
         this.date = new Date();
         this.message = message;
         this.belongTo = belongsTo;
-        sorted=new TreeMap<>();
+        sorted=new TreeMap<>();//this contains the emotion in sorted order of score
     }
 
     String getMessageTime() {
