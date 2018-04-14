@@ -9,13 +9,25 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
+import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.TreeMap;
+
 public class MainActivity extends AppCompatActivity {
 
     public static String customLog = "thisIsforCutomLog";
     public static String myServerIP;
-    public static int myServerPort=8080;
+    public static int myServerPort = 8080;
     public static String otherServerIP;
-    public static int otherServerPort=8080;
+    public static int otherServerPort = 8080;
     EditText ipAddressEditText, portEditText;
     TextView runningAddress;
     Button connectButton;
@@ -27,8 +39,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         ipAddressEditText = findViewById(R.id.addressEditText);
         portEditText = findViewById(R.id.portEditText);
-        runningAddress=findViewById(R.id.runningAddress);
-        connectButton=findViewById(R.id.connectButton);
+        runningAddress = findViewById(R.id.runningAddress);
+        connectButton = findViewById(R.id.connectButton);
         server = new Server(MainActivity.this);
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -42,16 +54,17 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.otherServerIP = ipAddress;
                 MainActivity.otherServerPort = otherPort;
 
-                String ipAndPort=myServerIP+"@"+myServerPort;
-                Log.d(customLog,"ma sending post");
+                String ipAndPort = myServerIP + "@" + myServerPort;
+                Log.d(customLog, "ma sending post");
                 new Client(ipAndPort);
                 //MainActivity.this.finish();
-                startActivity(new Intent(MainActivity.this,ChatActivity.class));
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
 
             }
         });
 
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
