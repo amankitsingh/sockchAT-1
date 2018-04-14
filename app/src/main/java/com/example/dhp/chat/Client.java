@@ -16,9 +16,9 @@ import java.io.OutputStreamWriter;
 import java.net.Socket;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.TreeMap;
 
 public class Client {
+    ChatActivity chatActivity;
     private Socket socket;
     private OutputStream outputStream;
     private OutputStreamWriter outputStreamWriter;
@@ -36,8 +36,28 @@ public class Client {
                     BufferedWriter br = new BufferedWriter(outputStreamWriter);
                     br.write(message);
                     br.close();
-                    Message temp = new Message(message, MessageListAdapter.VIEW_TYPE_MESSAGE_SENT);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }).start();
+    }
 
+    Client(final String message, final ChatActivity chatActivity) {
+        this.chatActivity = chatActivity;
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Log.d(MainActivity.customLog, MainActivity.otherServerIP + "    " + MainActivity.otherServerPort);
+                    socket = new Socket(MainActivity.otherServerIP, MainActivity.otherServerPort);
+                    Log.d(MainActivity.customLog, "Connected");
+                    outputStream = socket.getOutputStream();
+                    outputStreamWriter = new OutputStreamWriter(outputStream);
+                    BufferedWriter br = new BufferedWriter(outputStreamWriter);
+                    br.write(message);
+                    br.close();
+                    Message temp = new Message(message, MessageListAdapter.VIEW_TYPE_MESSAGE_SENT);
 
 
                     Map<Double, String> hashMap;
@@ -66,15 +86,17 @@ public class Client {
                         e.printStackTrace();
                     }
                     temp.sorted.putAll(hashMap);
+                    String forToast = "Emotion is:\n";
                     for (Map.Entry<Double, String> entry : temp.sorted.entrySet()) {
-                        Log.v(MainActivity.customLog, "KEY" + entry.getKey() + "  VALUE  " + entry.getValue());
+                        forToast += "KEY" + entry.getKey() + "  VALUE  " + entry.getValue() + "\n";
                     }
-
-
-
-
-
-
+                    final String finalToast = forToast;
+                    chatActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            chatActivity.messagehistoy.append(finalToast);
+                        }
+                    });
 
 
                     ChatActivity.messageList.add(temp);

@@ -49,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageToSend.getText().toString();
                 messageToSend.setText("");
-                new Client(message);
+                new Client(message,ChatActivity.this);
                 messagehistoy.append("\nYou:" + message);
             }
         });

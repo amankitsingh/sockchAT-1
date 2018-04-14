@@ -9,14 +9,14 @@ public class Message {
     Date date;
     String message;
     String name;
-    TreeMap<Double,String> sorted;
+    TreeMap<Double, String> sorted;
     int belongTo;//1:sent,2:received
 
     Message(String message, int belongsTo) {
         this.date = new Date();
         this.message = message;
         this.belongTo = belongsTo;
-        sorted=new TreeMap<>();//this contains the emotion in sorted order of score
+        sorted = new TreeMap<>();//this contains the emotion in sorted order of score
     }
 
     String getMessageTime() {

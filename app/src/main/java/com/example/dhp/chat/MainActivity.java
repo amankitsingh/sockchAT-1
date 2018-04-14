@@ -9,18 +9,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.ToneAnalyzer;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneAnalysis;
-import com.ibm.watson.developer_cloud.tone_analyzer.v3.model.ToneOptions;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.HashMap;
-import java.util.Map;
-import java.util.TreeMap;
-
 public class MainActivity extends AppCompatActivity {
 
     public static String customLog = "thisIsforCutomLog";
@@ -57,9 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 String ipAndPort = myServerIP + "@" + myServerPort;
                 Log.d(customLog, "ma sending post");
                 new Client(ipAndPort);
-                //MainActivity.this.finish();
-                startActivity(new Intent(MainActivity.this, ChatActivity.class));
-
+                finish();
             }
         });
 
@@ -69,5 +55,6 @@ public class MainActivity extends AppCompatActivity {
     protected void onDestroy() {
         super.onDestroy();
         server.onDestroy();
+        startActivity(new Intent(MainActivity.this, ChatActivity.class));
     }
 }
