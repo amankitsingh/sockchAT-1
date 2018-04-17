@@ -31,103 +31,6 @@ public class Server {
         serverChatActivity.start();
     }
 
-    private class ServerMainActivity extends Thread {
-        @Override
-        public void run() {
-            try {
-                MainActivity.myServerIP = getIpAddress();
-                Log.d(MainActivity.customLog, getIpAddress());
-                mainActivity.runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        mainActivity.runningAddress.setText(MainActivity.myServerIP + ":" + MainActivity.myServerPort);
-                    }
-                });
-                serverSocket = new ServerSocket(MainActivity.myServerPort);
-//                MainActivity.myServerPort=MainActivity.myServerPort;
-                while (true) {
-                    Socket socket = serverSocket.accept();
-                    mainActivity.runOnUiThread(new Runnable() {
-
-                        @Override
-                        public void run() {
-                            Toast.makeText(mainActivity.getApplicationContext(), "Server accepting...", Toast.LENGTH_LONG).show();
-                        }
-                    });
-                    Log.d(MainActivity.customLog, "accept post");
-                    InputStream inputStream = socket.getInputStream();
-
-                    Scanner s = new Scanner(inputStream).useDelimiter("\\A");
-                    String messageFromClient = s.hasNext() ? s.next() : "";
-                    Log.d(MainActivity.customLog, "message received from client:::" + messageFromClient);
-                    Log.d(MainActivity.customLog, "message received from client");
-                    String[] temp = messageFromClient.split("@");
-                    if (temp.length == 1) {
-                        serverSocket.close();
-                        mainActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
-                                mainActivity.finish();
-                            }
-                        });
-                    } else {
-                        MainActivity.otherServerIP = temp[0];
-                        MainActivity.otherServerPort = Integer.parseInt(temp[1]);
-                        socket.close();
-                        serverSocket.close();
-                        mainActivity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-                                Toast.makeText(mainActivity.getApplicationContext(),
-                                        "myServerIP:" + MainActivity.myServerIP +
-                                                "\notherServer:" + MainActivity.otherServerIP +
-                                                "\nmyServerPort:" + MainActivity.myServerPort +
-                                                "\notherServerPort" + MainActivity.otherServerPort,
-                                        Toast.LENGTH_LONG).show();
-                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
-                                mainActivity.finish();
-
-                            }
-                        });
-
-                    }
-
-                }
-            } catch (IOException e) {
-                Log.d(MainActivity.customLog, "err server ma");
-                e.printStackTrace();
-            }
-        }
-    }
-
-    private class ServerChatActivity extends Thread {
-        @Override
-        public void run() {
-            try {
-                serverSocket = new ServerSocket(MainActivity.myServerPort);
-                while (true) {
-                    Socket socket = serverSocket.accept();
-                    InputStream inputStream = socket.getInputStream();
-                    Scanner s = new Scanner(inputStream).useDelimiter("\\A");
-                    final String messageFromClient = s.hasNext() ? s.next() : "";
-                    socket.close();
-                    chatActivity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            chatActivity.messagehistoy.append("\nHE :" + messageFromClient);
-                            ChatActivity.messageList.add(new Message(messageFromClient, MessageListAdapter.VIEW_TYPE_MESSAGE_RECEIVED));
-                        }
-                    });
-
-
-                }
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     public String getIpAddress() {
         String ip = "";
         try {
@@ -162,6 +65,104 @@ public class Server {
                 serverSocket.close();
             } catch (IOException e) {
                 // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ServerMainActivity extends Thread {
+        @Override
+        public void run() {
+            try {
+                MainActivity.myServerIP = getIpAddress();
+                Log.d(MainActivity.customLog, getIpAddress());
+                mainActivity.runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        mainActivity.runningAddress.setText(MainActivity.myServerIP + ":" + MainActivity.myServerPort);
+                    }
+                });
+                serverSocket = new ServerSocket(MainActivity.myServerPort);
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    mainActivity.runOnUiThread(new Runnable() {
+
+                        @Override
+                        public void run() {
+                            Toast.makeText(mainActivity.getApplicationContext(), "Server accepting...", Toast.LENGTH_LONG).show();
+                        }
+                    });
+                    Log.d(MainActivity.customLog, "accept post");
+                    InputStream inputStream = socket.getInputStream();
+
+                    Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+                    String messageFromClient = s.hasNext() ? s.next() : "";
+                    Log.d(MainActivity.customLog, "message received from client:::" + messageFromClient);
+                    Log.d(MainActivity.customLog, "message received from client");
+                    String[] temp = messageFromClient.split("@");
+//                    if (temp.length == 1) {
+//                        serverSocket.close();
+//                        mainActivity.runOnUiThread(new Runnable() {
+//                            @Override
+//                            public void run() {
+//                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
+//                                mainActivity.finish();
+//                            }
+//                        });
+//                    } else {
+                    MainActivity.otherServerIP = temp[0];
+                    MainActivity.otherServerPort = Integer.parseInt(temp[1]);
+                    socket.close();
+                    serverSocket.close();
+                    mainActivity.runOnUiThread(new Runnable() {
+                                                   @Override
+                                                   public void run() {
+                                                       Toast.makeText(mainActivity.getApplicationContext(),
+                                                               "myServerIP:" + MainActivity.myServerIP +
+                                                                       "\notherServer:" + MainActivity.otherServerIP +
+                                                                       "\nmyServerPort:" + MainActivity.myServerPort +
+                                                                       "\notherServerPort" + MainActivity.otherServerPort,
+                                                               Toast.LENGTH_LONG).show();
+                                                       mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
+                                                       mainActivity.finish();
+
+                                                   }
+                                               }
+                    );
+
+                    //}
+
+                }
+            } catch (IOException e) {
+                Log.d(MainActivity.customLog, "err server ma");
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private class ServerChatActivity extends Thread {
+        @Override
+        public void run() {
+            try {
+                serverSocket = new ServerSocket(MainActivity.myServerPort);
+                while (true) {
+                    Socket socket = serverSocket.accept();
+                    InputStream inputStream = socket.getInputStream();
+                    Scanner s = new Scanner(inputStream).useDelimiter("\\A");
+                    final String messageFromClient = s.hasNext() ? s.next() : "";
+                    socket.close();
+                    chatActivity.runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            Log.d(MainActivity.customLog, "message received from client");
+                            chatActivity.messagehistoy.append("\nHE :" + messageFromClient);
+                            ChatActivity.messageList.add(new Message(messageFromClient, MessageListAdapter.VIEW_TYPE_MESSAGE_RECEIVED));
+                        }
+                    });
+
+
+                }
+            } catch (IOException e) {
                 e.printStackTrace();
             }
         }

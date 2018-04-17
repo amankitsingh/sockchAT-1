@@ -86,9 +86,9 @@ public class Client {
                         e.printStackTrace();
                     }
                     temp.sorted.putAll(hashMap);
-                    String forToast = "Emotion is:\n";
+                    String forToast = "\nEmotion is::";
                     for (Map.Entry<Double, String> entry : temp.sorted.entrySet()) {
-                        forToast += "KEY" + entry.getKey() + "  VALUE  " + entry.getValue() + "\n";
+                        forToast += "KEY:" + entry.getKey() + "::VALUE:" + entry.getValue() + "\n";
                     }
                     final String finalToast = forToast;
                     chatActivity.runOnUiThread(new Runnable() {
