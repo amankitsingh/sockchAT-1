@@ -11,7 +11,7 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String customLog = "thisIsforCutomLog";
+    public static String customLog = "This IsforCutomLog";
     public static String myServerIP;
     public static int myServerPort = 8080;
     public static String otherServerIP;
@@ -45,16 +45,13 @@ public class MainActivity extends AppCompatActivity {
                 String ipAndPort = myServerIP + "@" + myServerPort;
                 Log.d(customLog, "ma sending post");
                 new Client(ipAndPort);
+                server.onDestroy();
+                startActivity(new Intent(MainActivity.this, ChatActivity.class));
                 finish();
+
             }
         });
 
     }
 
-    @Override
-    protected void onDestroy() {
-        super.onDestroy();
-        server.onDestroy();
-        startActivity(new Intent(MainActivity.this, ChatActivity.class));
-    }
 }
