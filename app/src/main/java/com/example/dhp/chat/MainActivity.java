@@ -16,6 +16,7 @@ public class MainActivity extends AppCompatActivity {
     public static int myServerPort = 8080;
     public static String otherServerIP;
     public static int otherServerPort = 8080;
+    public static String emotionCurent="";
     EditText ipAddressEditText, portEditText;
     TextView runningAddress;
     Button connectButton;
@@ -25,7 +26,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        new Songs("Anger",this);
+        //new Songs("Anger",this);
         ipAddressEditText = findViewById(R.id.addressEditText);
         portEditText = findViewById(R.id.portEditText);
         runningAddress = findViewById(R.id.runningAddress);

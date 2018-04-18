@@ -65,7 +65,8 @@ public class Client {
                     ToneAnalyzer toneAnalyzer = new ToneAnalyzer(
                             "2017-09-21",
                             "812e5f45-2e44-4808-aab3-6d7f0c5bb93d",
-                            "MKCmNaIOKIYI");
+                            "" +
+                                    "MKCmNaIOKIYI");
                     toneAnalyzer.setEndPoint("https://gateway.watsonplatform.net/tone-analyzer/api");
                     ToneOptions toneOptions = new ToneOptions.Builder().text(message).build();
                     ToneAnalysis tone = toneAnalyzer.tone(toneOptions).execute();
@@ -87,16 +88,27 @@ public class Client {
                     }
                     temp.sorted.putAll(hashMap);
                     String forToast = "\nEmotion is::";
+                    int i = 0;
+                    String firstEntry = "";
                     for (Map.Entry<Double, String> entry : temp.sorted.entrySet()) {
+                        if (i == 0) {
+                            firstEntry = entry.getValue();
+                        }
+                        i++;
                         forToast += "KEY:" + entry.getKey() + "::VALUE:" + entry.getValue() + "\n";
                     }
                     final String finalToast = forToast;
+                    final String finalFirstEntry = firstEntry;
                     chatActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             chatActivity.messagehistoy.append(finalToast);
                         }
                     });
+
+                    Log.d(MainActivity.customLog, finalFirstEntry);
+                    MainActivity.emotionCurent = finalFirstEntry;
+                    //new Songs(finalFirstEntry,chatActivity);
 
 
                     ChatActivity.messageList.add(temp);
@@ -116,6 +128,7 @@ public class Client {
             }
         });
         thread.start();
+        final Songs songs = new Songs(MainActivity.emotionCurent, chatActivity);
     }
 
 }
