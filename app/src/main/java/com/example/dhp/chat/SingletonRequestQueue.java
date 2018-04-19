@@ -6,11 +6,6 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 
-/**
- * Created by root on 21/1/18.
- * Only one instance of the RequestQueue will be present throughtout the Application.
- * Make sure you pass the Application Context while creating an instance using getInstance()
- */
 
 public class SingletonRequestQueue {
 

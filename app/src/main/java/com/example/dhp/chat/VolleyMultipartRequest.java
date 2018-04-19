@@ -15,12 +15,6 @@ import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.util.Map;
 
-/**
- * Custom request to make multipart header and upload file.
- *
- * Sketch Project Studio
- * Created by Angga on 27/04/2016 12.05.
- */
 public class VolleyMultipartRequest extends Request<NetworkResponse> {
     private final String twoHyphens = "--";
     private final String lineEnd = "\r\n";
@@ -311,4 +305,3 @@ public class VolleyMultipartRequest extends Request<NetworkResponse> {
         }
     }
 }
-
