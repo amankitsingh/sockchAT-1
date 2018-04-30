@@ -31,43 +31,6 @@ public class Server {
         serverChatActivity.start();
     }
 
-    public String getIpAddress() {
-        String ip = "";
-        try {
-            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
-                    .getNetworkInterfaces();
-            while (enumNetworkInterfaces.hasMoreElements()) {
-                NetworkInterface networkInterface = enumNetworkInterfaces
-                        .nextElement();
-                Enumeration<InetAddress> enumInetAddress = networkInterface
-                        .getInetAddresses();
-                while (enumInetAddress.hasMoreElements()) {
-                    InetAddress inetAddress = enumInetAddress
-                            .nextElement();
-
-                    if (inetAddress.isSiteLocalAddress()) {
-                        ip += inetAddress.getHostAddress();
-                    }
-                }
-            }
-
-        } catch (SocketException e) {
-            e.printStackTrace();
-            ip += "Something Wrong! " + e.toString() + "\n";
-        }
-        return ip;
-    }
-
-    public void onDestroy() {
-        if (serverSocket != null) {
-            try {
-                serverSocket.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
     private class ServerMainActivity extends Thread {
         @Override
         public void run() {
@@ -81,6 +44,7 @@ public class Server {
                     }
                 });
                 serverSocket = new ServerSocket(MainActivity.myServerPort);
+//                MainActivity.myServerPort=MainActivity.myServerPort;
                 while (true) {
                     Socket socket = serverSocket.accept();
                     mainActivity.runOnUiThread(new Runnable() {
@@ -98,37 +62,36 @@ public class Server {
                     Log.d(MainActivity.customLog, "message received from client:::" + messageFromClient);
                     Log.d(MainActivity.customLog, "message received from client");
                     String[] temp = messageFromClient.split("@");
-//                    if (temp.length == 1) {
-//                        serverSocket.close();
-//                        mainActivity.runOnUiThread(new Runnable() {
-//                            @Override
-//                            public void run() {
-//                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
-//                                mainActivity.finish();
-//                            }
-//                        });
-//                    } else {
-                    MainActivity.otherServerIP = temp[0];
-                    MainActivity.otherServerPort = Integer.parseInt(temp[1]);
-                    socket.close();
-                    serverSocket.close();
-                    mainActivity.runOnUiThread(new Runnable() {
-                                                   @Override
-                                                   public void run() {
-                                                       Toast.makeText(mainActivity.getApplicationContext(),
-                                                               "myServerIP:" + MainActivity.myServerIP +
-                                                                       "\notherServer:" + MainActivity.otherServerIP +
-                                                                       "\nmyServerPort:" + MainActivity.myServerPort +
-                                                                       "\notherServerPort" + MainActivity.otherServerPort,
-                                                               Toast.LENGTH_LONG).show();
-                                                       mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
-                                                       mainActivity.finish();
+                    if (temp.length == 1) {
+                        serverSocket.close();
+                        mainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
+                                mainActivity.finish();
+                            }
+                        });
+                    } else {
+                        MainActivity.otherServerIP = temp[0];
+                        MainActivity.otherServerPort = Integer.parseInt(temp[1]);
+                        socket.close();
+                        serverSocket.close();
+                        mainActivity.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(mainActivity.getApplicationContext(),
+                                        "myServerIP:" + MainActivity.myServerIP +
+                                                "\notherServer:" + MainActivity.otherServerIP +
+                                                "\nmyServerPort:" + MainActivity.myServerPort +
+                                                "\notherServerPort" + MainActivity.otherServerPort,
+                                        Toast.LENGTH_LONG).show();
+                                mainActivity.startActivity(new Intent(mainActivity, ChatActivity.class));
+                                mainActivity.finish();
 
-                                                   }
-                                               }
-                    );
+                            }
+                        });
 
-                    //}
+                    }
 
                 }
             } catch (IOException e) {
@@ -152,7 +115,6 @@ public class Server {
                     chatActivity.runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
-                            Log.d(MainActivity.customLog, "message received from client");
                             chatActivity.messagehistoy.append("\nHE :" + messageFromClient);
                             ChatActivity.messageList.add(new Message(messageFromClient, MessageListAdapter.VIEW_TYPE_MESSAGE_RECEIVED));
                         }
@@ -165,4 +127,45 @@ public class Server {
             }
         }
     }
+
+    public String getIpAddress() {
+        String ip = "";
+        try {
+            Enumeration<NetworkInterface> enumNetworkInterfaces = NetworkInterface
+                    .getNetworkInterfaces();
+            while (enumNetworkInterfaces.hasMoreElements()) {
+                NetworkInterface networkInterface = enumNetworkInterfaces
+                        .nextElement();
+                Enumeration<InetAddress> enumInetAddress = networkInterface
+                        .getInetAddresses();
+                while (enumInetAddress.hasMoreElements()) {
+                    InetAddress inetAddress = enumInetAddress
+                            .nextElement();
+
+                    if (inetAddress.isSiteLocalAddress()) {
+                        ip += inetAddress.getHostAddress();
+                    }
+                }
+            }
+
+        } catch (SocketException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+            ip += "Something Wrong! " + e.toString() + "\n";
+        }
+        return ip;
+    }
+
+    public void onDestroy() {
+        if (serverSocket != null) {
+            try {
+                serverSocket.close();
+            } catch (IOException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        }
+    }
+
+
 }

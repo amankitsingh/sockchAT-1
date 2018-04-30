@@ -11,12 +11,11 @@ import android.widget.TextView;
 
 public class MainActivity extends AppCompatActivity {
 
-    public static String customLog = "ThisIsforCutomLog";
+    public static String customLog = "thisIsforCutomLog";
     public static String myServerIP;
-    public static int myServerPort = 8080;
+    public static int myServerPort=8080;
     public static String otherServerIP;
-    public static int otherServerPort = 8080;
-    public static String emotionCurent="";
+    public static int otherServerPort=8080;
     EditText ipAddressEditText, portEditText;
     TextView runningAddress;
     Button connectButton;
@@ -26,11 +25,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        //new Songs("Anger",this);
         ipAddressEditText = findViewById(R.id.addressEditText);
         portEditText = findViewById(R.id.portEditText);
-        runningAddress = findViewById(R.id.runningAddress);
-        connectButton = findViewById(R.id.connectButton);
+        runningAddress=findViewById(R.id.runningAddress);
+        connectButton=findViewById(R.id.connectButton);
         server = new Server(MainActivity.this);
         connectButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -44,16 +42,19 @@ public class MainActivity extends AppCompatActivity {
                 MainActivity.otherServerIP = ipAddress;
                 MainActivity.otherServerPort = otherPort;
 
-                String ipAndPort = myServerIP + "@" + myServerPort;
-                Log.d(customLog, "ma sending post");
+                String ipAndPort=myServerIP+"@"+myServerPort;
+                Log.d(customLog,"ma sending post");
                 new Client(ipAndPort);
-                server.onDestroy();
-                startActivity(new Intent(MainActivity.this, ChatActivity.class));
-                finish();
+                //MainActivity.this.finish();
+                startActivity(new Intent(MainActivity.this,ChatActivity.class));
 
             }
         });
 
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        server.onDestroy();
+    }
 }

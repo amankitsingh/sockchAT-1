@@ -14,14 +14,13 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class ChatActivity extends AppCompatActivity {
-    static List<Message> messageList;
+    private RecyclerView mMessageRecycler;
+    private MessageListAdapter mMessageAdapter;
     TextView messagehistoy;
-    TextView songsHistory;
     EditText messageToSend;
     Button sendButton;
     Server server;
-    private RecyclerView mMessageRecycler;
-    private MessageListAdapter mMessageAdapter;
+    static List<Message> messageList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,7 +36,6 @@ public class ChatActivity extends AppCompatActivity {
         messagehistoy = findViewById(R.id.messageHistory);
         messageToSend = findViewById(R.id.messageToSend);
         sendButton = findViewById(R.id.sendButton);
-        songsHistory = findViewById(R.id.songsHistory);
         server = new Server(this);
 
         Toast.makeText(getApplicationContext(),
@@ -51,7 +49,7 @@ public class ChatActivity extends AppCompatActivity {
             public void onClick(View view) {
                 String message = messageToSend.getText().toString();
                 messageToSend.setText("");
-                new Client(message, ChatActivity.this);
+                new Client(message);
                 messagehistoy.append("\nYou:" + message);
             }
         });
@@ -63,6 +61,4 @@ public class ChatActivity extends AppCompatActivity {
         super.onDestroy();
         server.onDestroy();
     }
-
-
 }
