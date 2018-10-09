@@ -20,11 +20,7 @@ public class Client {
                     Log.d(MainActivity.customLog, MainActivity.otherServerIP + "    " + MainActivity.otherServerPort);
                     socket = new Socket(MainActivity.otherServerIP, MainActivity.otherServerPort);
                     Log.d(MainActivity.customLog, "Connected");
-                    outputStream = socket.getOutputStream();
-                    outputStreamWriter = new OutputStreamWriter(outputStream);
-                    BufferedWriter br = new BufferedWriter(outputStreamWriter);
-                    br.write(message);
-                    br.close();
+                   
                     ChatActivity.messageList.add(new Message(message, MessageListAdapter.VIEW_TYPE_MESSAGE_SENT));
                     Log.d(MainActivity.customLog, "Message sent from try blk Client:" + message);
                     socket.close();
